@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+  <title>HomeFit | Whole Body Studio</title>
+  <!-- Apple-style typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Light Mode (default) - Gold/Amber Theme */
+    :root {
+      --bg-primary: #f5f5f7;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --border-color: rgba(224, 224, 230, 0.6);
+      --row-bg: rgba(245, 245, 247, 0.5);
+      --row-hover: #ffffff;
+      --progress-bg: #ffffff;
+      --badge-bg: rgba(255, 255, 255, 0.7);
+      --glass-bg: rgba(255, 255, 255, 0.6);
+      --accent: #d4af37;
+      --accent-dark: #b8960c;
+      --accent-light: #f5e6a3;
+      --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
+    }
+
+    body.dark {
+      --bg-primary: #1c1c1e;
+      --bg-secondary: #2c2c2e;
+      --bg-card: rgba(44, 44, 46, 0.96);
+      --text-primary: #f5f5f7;
+      --text-secondary: #98989e;
+      --border-color: rgba(84, 84, 88, 0.6);
+      --row-bg: rgba(58, 58, 60, 0.5);
+      --row-hover: #3a3a3c;
+      --progress-bg: #2c2c2e;
+      --badge-bg: rgba(44, 44, 46, 0.7);
+      --glass-bg: rgba(44, 44, 46, 0.6);
+      --accent: #d4af37;
+      --accent-dark: #f5e6a3;
+      --accent-light: #b8960c;
+      --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
+    }
+
+    body {
+      background: var(--bg-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', Helvetica, sans-serif;
+      color: var(--text-primary);
+      line-height: 1.4;
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: clamp(0.8rem, 4vw, 2rem) clamp(0.8rem, 4vw, 2rem) clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .header-section {
+      margin-bottom: clamp(1rem, 4vw, 1.8rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: clamp(0.5rem, 3vw, 1rem);
+    }
+
+    .title-group {
+      flex: 1;
+    }
+
+    .title-group h1 {
+      font-size: clamp(1.6rem, 6vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: var(--accent-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.1rem;
+    }
+
+    .title-group p {
+      font-size: clamp(0.65rem, 3vw, 0.8rem);
+      font-weight: 400;
+      color: var(--text-secondary);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: clamp(0.5rem, 2vw, 1rem);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      border: 0.5px solid var(--border-color);
+      border-radius: 30px;
+      padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      color: var(--text-primary);
+      transition: none;
+    }
+
+    .theme-toggle i {
+      font-size: clamp(1rem, 3.5vw, 1.2rem);
+    }
+
+    .info-widget {
+      background: var(--badge-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 30px;
+      padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
+      border: 0.5px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: clamp(0.5rem, 2vw, 1rem);
+      flex-wrap: wrap;
+    }
+
+    .time-date {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .time-display {
+      font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+
+    .date-display {
+      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .weather-display {
+      font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: clamp(0.4rem, 2vw, 0.8rem);
+      border-left: 0.5px solid var(--border-color);
+    }
+
+    .weather-display i {
+      font-size: clamp(0.7rem, 3vw, 0.9rem);
+      color: var(--accent);
+    }
+
+    .location-status {
+      font-size: 0.6rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    .master-card {
+      background: var(--bg-card);
+      border-radius: clamp(24px, 5vw, 36px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      overflow: hidden;
+      border: 0.5px solid var(--border-color);
+      margin-bottom: clamp(1rem, 4vw, 1.5rem);
+      transition: background 0.3s ease;
+    }
+
+    .video-frame {
+      background: var(--bg-secondary);
+      padding: clamp(0.6rem, 3vw, 1rem) clamp(0.6rem, 3vw, 1rem) clamp(0.5rem, 2.5vw, 0.8rem) clamp(0.6rem, 3vw, 1rem);
+      border-bottom: 0.5px solid var(--border-color);
+    }
+
+    .video-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: clamp(0.4rem, 2vw, 0.7rem);
+      padding: 0 0.2rem;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .video-label span:first-child {
+      font-weight: 600;
+      font-size: clamp(0.55rem, 2.5vw, 0.7rem);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--accent);
+      background: rgba(212, 175, 55, 0.12);
+      padding: 3px 10px;
+      border-radius: 30px;
+    }
+
+    .video-label span:last-child {
+      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      color: var(--text-secondary);
+    }
+
+    .gif-container {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: var(--bg-secondary);
+      border-radius: clamp(16px, 4vw, 24px);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.05);
+    }
+
+    #exerciseGif {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: var(--bg-secondary);
+    }
+
+    .gif-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-secondary);
+      gap: 8px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .gif-placeholder i {
+      font-size: clamp(1.5rem, 6vw, 2.2rem);
+    }
+
+    .gif-placeholder span {
+      font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+      font-weight: 500;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .exercise-list-section {
+      padding: clamp(0.6rem, 3vw, 1rem) clamp(0.5rem, 2.5vw, 0.8rem) clamp(0.4rem, 2vw, 0.7rem) clamp(0.5rem, 2.5vw, 0.8rem);
+    }
+
+    .list-header {
+      padding: 0 clamp(0.4rem, 2vw, 0.8rem) clamp(0.3rem, 2vw, 0.5rem) clamp(0.4rem, 2vw, 0.8rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .list-header h3 {
+      font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .list-header p {
+      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      color: var(--text-secondary);
+    }
+
+    .exercise-scroll-list {
+      max-height: clamp(300px, 45vh, 450px);
+      overflow-y: auto;
+      padding: 0.1rem 0.2rem;
+    }
+
+    .exercise-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: clamp(0.5rem, 2.5vw, 0.8rem) clamp(0.6rem, 3vw, 1rem);
+      margin: 0.2rem 0.3rem;
+      background: var(--row-bg);
+      border-radius: clamp(14px, 3vw, 20px);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 0.5px solid transparent;
+    }
+
+    .exercise-row:hover {
+      background: var(--row-hover);
+      border-color: rgba(212, 175, 55, 0.3);
+      transform: translateX(2px);
+    }
+
+    .exercise-row.completed {
+      background: rgba(212, 175, 55, 0.12);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .exercise-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .exercise-name {
+      font-weight: 620;
+      font-size: clamp(0.75rem, 3.5vw, 0.9rem);
+      color: var(--text-primary);
+      letter-spacing: -0.2px;
+      word-break: break-word;
+    }
+
+    .exercise-meta {
+      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      color: var(--text-secondary);
+      margin-top: 2px;
+      display: flex;
+      gap: clamp(6px, 2vw, 10px);
+      flex-wrap: wrap;
+    }
+
+    .play-icon-btn {
+      background: rgba(212, 175, 55, 0.12);
+      border: none;
+      width: clamp(32px, 8vw, 42px);
+      height: clamp(32px, 8vw, 42px);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: clamp(0.7rem, 3vw, 0.9rem);
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .play-icon-btn:hover {
+      background: var(--accent);
+      color: white;
+      transform: scale(0.94);
+    }
+
+    .exercise-row.completed .play-icon-btn {
+      background: var(--accent);
+      color: white;
+    }
+
+    .day-selector-wrapper {
+      padding: clamp(0.4rem, 2.5vw, 0.7rem) clamp(0.5rem, 2.5vw, 0.8rem) clamp(0.6rem, 3vw, 1rem) clamp(0.5rem, 2.5vw, 0.8rem);
+      border-top: 0.5px solid var(--border-color);
+      margin-top: 0.2rem;
+    }
+
+    .day-selector-label {
+      font-size: clamp(0.55rem, 2.5vw, 0.7rem);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: clamp(0.4rem, 2vw, 0.6rem);
+      padding-left: clamp(0.4rem, 2vw, 0.8rem);
+    }
+
+    .day-selector {
+      display: flex;
+      gap: clamp(6px, 2vw, 12px);
+      background: var(--row-bg);
+      padding: 5px;
+      border-radius: 50px;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .day-btn {
+      background: transparent;
+      border: none;
+      padding: clamp(4px, 2vw, 6px) clamp(14px, 5vw, 24px);
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: clamp(0.65rem, 3vw, 0.8rem);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .day-btn.active {
+      background: var(--bg-secondary);
+      color: var(--accent);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .progress-screen {
+      background: var(--progress-bg);
+      border-radius: clamp(20px, 5vw, 32px);
+      padding: clamp(0.8rem, 3.5vw, 1.3rem) clamp(0.8rem, 4vw, 1.5rem);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border: 0.5px solid var(--border-color);
+      transition: background 0.3s ease;
+    }
+
+    .section-header {
+      font-size: clamp(0.9rem, 4vw, 1.2rem);
+      font-weight: 640;
+      margin-bottom: clamp(0.5rem, 3vw, 0.9rem);
+      color: var(--text-primary);
+    }
+
+    .weekly-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: clamp(4px, 1.5vw, 8px);
+      flex-wrap: wrap;
+      margin-bottom: clamp(0.8rem, 3vw, 1.2rem);
+    }
+
+    .day-card {
+      background: var(--row-bg);
+      border-radius: clamp(12px, 3vw, 18px);
+      flex: 1;
+      text-align: center;
+      padding: clamp(0.3rem, 2vw, 0.5rem) 0.1rem;
+      min-width: 40px;
+    }
+
+    .day-name {
+      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      color: var(--text-secondary);
+    }
+
+    .day-completed {
+      font-weight: 700;
+      font-size: clamp(0.7rem, 3vw, 0.95rem);
+      color: var(--text-primary);
+    }
+
+    .chart-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: clamp(4px, 2vw, 10px);
+      height: clamp(55px, 12vw, 80px);
+      margin-top: clamp(0.4rem, 2vw, 0.7rem);
+    }
+
+    .bar {
+      background: var(--accent);
+      width: 100%;
+      border-radius: 8px;
+      transition: height 0.3s;
+    }
+
+    .celebration-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      z-index: 3000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.3s ease;
+    }
+
+    .celebration-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .celebration-card {
+      background: var(--bg-card);
+      border-radius: 48px;
+      padding: 2rem 2.5rem;
+      text-align: center;
+      transform: scale(0.8);
+      transition: transform 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+      border: 0.5px solid var(--border-color);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .celebration-overlay.active .celebration-card {
+      transform: scale(1);
+    }
+
+    .celebration-emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      animation: bounce 0.5s ease;
+    }
+
+    .celebration-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .celebration-message {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .celebration-btn {
+      background: var(--accent);
+      border: none;
+      padding: 0.6rem 1.8rem;
+      border-radius: 40px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .celebration-btn:hover {
+      transform: scale(0.96);
+      opacity: 0.9;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1d1d1fdd;
+      backdrop-filter: blur(12px);
+      color: white;
+      padding: clamp(6px, 2.5vw, 10px) clamp(14px, 5vw, 24px);
+      border-radius: 40px;
+      font-size: clamp(0.6rem, 2.5vw, 0.75rem);
+      z-index: 2000;
+      font-weight: 500;
+      white-space: normal;
+      text-align: center;
+      max-width: 90vw;
+    }
+
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--row-bg);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 3px;
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .app-container { max-width: 90%; margin: 0 auto; }
+      .exercise-scroll-list { max-height: 400px; }
+      .day-selector { width: 100%; justify-content: center; }
+    }
+
+    @media (min-width: 1025px) {
+      .app-container { max-width: 800px; margin: 0 auto; }
+    }
+
+    @media (max-width: 680px) {
+      .header-section { flex-direction: column; align-items: stretch; }
+      .header-right { justify-content: space-between; width: 100%; }
+      .info-widget { flex: 1; justify-content: space-between; }
+      .day-selector { width: 100%; justify-content: center; }
+      .day-btn { flex: 1; text-align: center; }
+      .video-label { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      .header-right { flex-direction: column; align-items: stretch; }
+      .theme-toggle { justify-content: center; }
+      .info-widget { justify-content: center; flex-wrap: wrap; }
+      .weather-display { border-left: none; padding-left: 0; border-top: 0.5px solid var(--border-color); padding-top: 6px; margin-top: 4px; justify-content: center; }
+      .time-date { align-items: center; }
+      .celebration-card { padding: 1.5rem; margin: 1rem; }
+      .celebration-title { font-size: 1.4rem; }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .exercise-scroll-list { max-height: 280px; }
+      .master-card { margin-bottom: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="header-section">
+    <div class="title-group">
+      <h1>HomeFit</h1>
+      <p>5 exercises per session · whole body training</p>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+      </div>
+      <div class="info-widget" id="infoWidget">
+        <div class="time-date">
+          <div class="time-display" id="timeDisplay">--:--</div>
+          <div class="date-display" id="dateDisplay">---</div>
+          <div class="location-status" id="locationStatus">📍 detecting...</div>
+        </div>
+        <div class="weather-display" id="weatherDisplay">
+          <i class="fas fa-cloud-sun"></i>
+          <span>Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="master-card">
+    <div class="video-frame">
+      <div class="video-label">
+        <span><i class="fas fa-play-circle"></i> exercise demo</span>
+        <span>tap any exercise → view GIF</span>
+      </div>
+      <div class="gif-container" id="gifContainer">
+        <img id="exerciseGif" class="hidden" alt="exercise demonstration" style="width:100%;height:100%;object-fit:contain;">
+        <div id="gifPlaceholder" class="gif-placeholder">
+          <i class="fas fa-film"></i>
+          <span>select an exercise</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise-list-section">
+      <div class="list-header">
+        <h3><i class="fas fa-dumbbell"></i> whole body exercises</h3>
+        <p>tap <i class="fas fa-play"></i> to complete</p>
+      </div>
+      <div class="exercise-scroll-list" id="exerciseListContainer"></div>
+    </div>
+
+    <div class="day-selector-wrapper">
+      <div class="day-selector-label">
+        <i class="fas fa-calendar-week"></i> training rotation
+      </div>
+      <div class="day-selector" id="daySelector">
+        <button class="day-btn active" data-day="A">Session A</button>
+        <button class="day-btn" data-day="B">Session B</button>
+        <button class="day-btn" data-day="C">Session C</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-screen">
+    <div class="section-header">Weekly flow</div>
+    <div class="weekly-summary" id="weeklySummary"></div>
+    <div class="chart-bars" id="chartBars"></div>
+  </div>
+</div>
+
+<div id="celebrationModal" class="celebration-overlay">
+  <div class="celebration-card">
+    <div class="celebration-emoji">💪</div>
+    <div class="celebration-title">Great Job!</div>
+    <div class="celebration-message">You completed your workout session! 🔥</div>
+    <button class="celebration-btn" id="closeCelebration">Continue</button>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // GITHUB PAGES FIX - Case insensitive file lookup
+  // ============================================================
+  
+  // Define all possible filename variations for GitHub Pages
+  // GitHub is case-sensitive, so we need to try multiple patterns
+  const possibleExtensions = ['.gif', '.GIF'];
+  const possibleCaseVariations = [
+    // Original lowercase names
+    'goblet-squat', 'pushups', 'pulldown', 'dumbbell-row', 'plank',
+    'reverse-lunge', 'shoulder-press', 'romanian-deadlift', 'glute-bridge',
+    'dead-bug', 'band-chest-press', 'dumbbell-curl', 'triceps-kickback',
+    'lateral-raise', 'russian-twist'
+  ];
+  
+  // Mapping from exercise name to possible filename
+  const filenameMap = {
+    "Goblet Squat": ["goblet-squat", "goblet_squat", "GobletSquat", "gobletsquat"],
+    "Push-ups": ["pushups", "push-ups", "push_ups", "PushUps"],
+    "Pull-ups / Band Pulldown": ["pulldown", "band-pulldown", "lat-pulldown", "Pulldown"],
+    "Dumbbell Row": ["dumbbell-row", "dumbbell_row", "DumbbellRow", "db-row"],
+    "Plank": ["plank", "Plank"],
+    "Reverse Lunges": ["reverse-lunge", "reverse_lunge", "ReverseLunge", "reverselunge"],
+    "Dumbbell Shoulder Press": ["shoulder-press", "shoulder_press", "ShoulderPress", "db-shoulder-press"],
+    "Romanian Deadlift": ["romanian-deadlift", "romanian_deadlift", "RomanianDeadlift", "rdl"],
+    "Glute Bridge": ["glute-bridge", "glute_bridge", "GluteBridge", "glutebridge"],
+    "Dead Bug": ["dead-bug", "dead_bug", "DeadBug", "deadbug"],
+    "Band Chest Press": ["band-chest-press", "band_chest_press", "BandChestPress", "chest-press"],
+    "Dumbbell Curl": ["dumbbell-curl", "dumbbell_curl", "DumbbellCurl", "db-curl"],
+    "Triceps Kickback": ["triceps-kickback", "triceps_kickback", "TricepsKickback", "kickback"],
+    "Lateral Raise": ["lateral-raise", "lateral_raise", "LateralRaise", "laterals"],
+    "Russian Twist": ["russian-twist", "russian_twist", "RussianTwist", "russiantwist"]
+  };
+  
+  // Cache for successful URLs
+  const urlCache = {};
+  
+  async function findGifUrl(exerciseName) {
+    // Check cache first
+    if (urlCache[exerciseName]) {
+      return urlCache[exerciseName];
+    }
+    
+    const possibleNames = filenameMap[exerciseName] || [exerciseName.toLowerCase().replace(/[^a-z]/g, '')];
+    
+    // Try different combinations
+    for (const baseName of possibleNames) {
+      for (const ext of possibleExtensions) {
+        const url = `${baseName}${ext}`;
+        try {
+          const response = await fetch(url, { method: 'HEAD' });
+          if (response.ok) {
+            urlCache[exerciseName] = url;
+            console.log(`Found GIF: ${url}`);
+            return url;
+          }
+        } catch (e) {
+          // Continue trying
+        }
+      }
+    }
+    
+    console.warn(`No GIF found for: ${exerciseName}`);
+    return null;
+  }
+  
+  function getGifForExercise(name) {
+    // Return the cached URL or null (will be loaded async)
+    return urlCache[name] || null;
+  }
+
+  // ============================================================
+  // WHOLE BODY EXERCISES - 5 per session
+  // ============================================================
+  const sessionA = [
+    { name: "Goblet Squat", sets: "3x12", target: "Legs + Glutes + Core" },
+    { name: "Push-ups", sets: "3x10-15", target: "Chest + Shoulders + Triceps" },
+    { name: "Pull-ups / Band Pulldown", sets: "3x10", target: "Back + Biceps" },
+    { name: "Plank", sets: "3x30-45s", target: "Core + Stability" },
+    { name: "Reverse Lunges", sets: "3x10/leg", target: "Legs + Balance" }
+  ];
+
+  const sessionB = [
+    { name: "Dumbbell Row", sets: "3x12/side", target: "Back + Rear Delts" },
+    { name: "Dumbbell Shoulder Press", sets: "3x10", target: "Shoulders + Triceps" },
+    { name: "Romanian Deadlift", sets: "3x12", target: "Hamstrings + Glutes" },
+    { name: "Glute Bridge", sets: "3x15", target: "Glutes + Core" },
+    { name: "Dead Bug", sets: "3x10/side", target: "Deep Core + Coordination" }
+  ];
+
+  const sessionC = [
+    { name: "Band Chest Press", sets: "3x12", target: "Chest + Front Delts" },
+    { name: "Dumbbell Curl", sets: "3x12", target: "Biceps" },
+    { name: "Triceps Kickback", sets: "3x12", target: "Triceps" },
+    { name: "Lateral Raise", sets: "3x12", target: "Medial Delts" },
+    { name: "Russian Twist", sets: "3x20", target: "Obliques + Core" }
+  ];
+
+  const sessions = { A: sessionA, B: sessionB, C: sessionC };
+
+  let currentDay = "A";
+  let completedExercises = new Set();
+  let weeklyData = [12, 10, 15, 11, 9, 14, 13];
+  let sessionCompletionFlag = false;
+
+  const gifImage = document.getElementById('exerciseGif');
+  const placeholderDiv = document.getElementById('gifPlaceholder');
+  const exerciseContainer = document.getElementById('exerciseListContainer');
+  const celebrationModal = document.getElementById('celebrationModal');
+  const closeCelebrationBtn = document.getElementById('closeCelebration');
+  const locationStatusSpan = document.getElementById('locationStatus');
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2000);
+  }
+
+  function showCelebration() {
+    celebrationModal.classList.add('active');
+    setTimeout(() => {
+      celebrationModal.classList.remove('active');
+    }, 3000);
+  }
+
+  closeCelebrationBtn.addEventListener('click', () => {
+    celebrationModal.classList.remove('active');
+  });
+
+  celebrationModal.addEventListener('click', (e) => {
+    if (e.target === celebrationModal) {
+      celebrationModal.classList.remove('active');
+    }
+  });
+
+  function triggerSessionComplete() {
+    showCelebration();
+  }
+
+  function updateProgressUI() {
+    const weeklyDiv = document.getElementById('weeklySummary');
+    const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    weeklyDiv.innerHTML = '';
+    for (let i = 0; i < days.length; i++) {
+      const val = weeklyData[i] || 0;
+      const dayCard = document.createElement('div');
+      dayCard.className = 'day-card';
+      dayCard.innerHTML = `<div class="day-name">${days[i]}</div><div class="day-completed">${val}</div>`;
+      weeklyDiv.appendChild(dayCard);
+    }
+    const maxVal = Math.max(...weeklyData, 1);
+    const barsContainer = document.getElementById('chartBars');
+    barsContainer.innerHTML = '';
+    for (let i = 0; i < weeklyData.length; i++) {
+      const percent = (weeklyData[i] / maxVal) * 100;
+      const wrapper = document.createElement('div');
+      wrapper.style.flex = '1';
+      wrapper.style.display = 'flex';
+      wrapper.style.flexDirection = 'column';
+      wrapper.style.alignItems = 'center';
+      const barDiv = document.createElement('div');
+      barDiv.className = 'bar';
+      barDiv.style.height = `${Math.max(18, percent)}px`;
+      const labelSpan = document.createElement('div');
+      labelSpan.style.fontSize = '0.55rem';
+      labelSpan.style.marginTop = '4px';
+      labelSpan.innerText = ['M', 'T', 'W', 'T', 'F', 'S', 'S'][i];
+      wrapper.appendChild(barDiv);
+      wrapper.appendChild(labelSpan);
+      barsContainer.appendChild(wrapper);
+    }
+  }
+
+  function recordProgress() {
+    const todayIdx = new Date().getDay();
+    let idx = (todayIdx + 6) % 7;
+    weeklyData[idx] = (weeklyData[idx] || 0) + 5;
+    updateProgressUI();
+  }
+
+  function markExerciseCompleted(exerciseName) {
+    if (completedExercises.has(exerciseName)) return false;
+    completedExercises.add(exerciseName);
+    recordProgress();
+    
+    const sessionExercises = sessions[currentDay];
+    const totalCount = sessionExercises.length;
+    const completedCount = completedExercises.size;
+    
+    const rows = document.querySelectorAll('.exercise-row');
+    rows.forEach(row => {
+      const nameEl = row.querySelector('.exercise-name');
+      if (nameEl && nameEl.innerText === exerciseName) {
+        row.classList.add('completed');
+        const btnIcon = row.querySelector('.play-icon-btn i');
+        if (btnIcon) btnIcon.className = 'fas fa-check';
+      }
+    });
+    
+    if (completedCount === totalCount && totalCount > 0 && !sessionCompletionFlag) {
+      sessionCompletionFlag = true;
+      triggerSessionComplete();
+    }
+    return true;
+  }
+
+  async function loadExerciseGif(exercise) {
+    // Show loading state
+    placeholderDiv.querySelector('span').innerText = 'loading...';
+    
+    // Find the GIF URL (this handles case-insensitive search)
+    let gifUrl = urlCache[exercise.name];
+    
+    if (!gifUrl) {
+      gifUrl = await findGifUrl(exercise.name);
+    }
+    
+    if (gifUrl && gifImage) {
+      gifImage.src = '';
+      gifImage.onerror = function() {
+        console.error(`Failed to load GIF: ${gifUrl}`);
+        showToast(`⚠️ GIF not found: ${exercise.name}`);
+        gifImage.classList.add('hidden');
+        placeholderDiv.classList.remove('hidden');
+        placeholderDiv.querySelector('span').innerText = 'select an exercise';
+      };
+      gifImage.onload = function() {
+        gifImage.classList.remove('hidden');
+        placeholderDiv.classList.add('hidden');
+      };
+      gifImage.src = gifUrl;
+    } else {
+      showToast(`⚠️ No GIF available for ${exercise.name}`);
+      gifImage.classList.add('hidden');
+      placeholderDiv.classList.remove('hidden');
+      placeholderDiv.querySelector('span').innerText = 'select an exercise';
+    }
+    
+    const isNew = markExerciseCompleted(exercise.name);
+    if (isNew) showToast(`✓ ${exercise.name} completed`);
+  }
+
+  function renderExerciseList() {
+    const sessionExercises = sessions[currentDay];
+    exerciseContainer.innerHTML = '';
+    
+    sessionExercises.forEach(ex => {
+      const isCompleted = completedExercises.has(ex.name);
+      const row = document.createElement('div');
+      row.className = `exercise-row ${isCompleted ? 'completed' : ''}`;
+      row.innerHTML = `
+        <div class="exercise-info">
+          <div class="exercise-name">${ex.name}</div>
+          <div class="exercise-meta">
+            <span><i class="fas fa-chart-line"></i> ${ex.sets}</span>
+            <span><i class="fas fa-bullseye"></i> ${ex.target}</span>
+          </div>
+        </div>
+        <button class="play-icon-btn">
+          <i class="fas ${isCompleted ? 'fa-check' : 'fa-play'}"></i>
+        </button>
+      `;
+      const playBtn = row.querySelector('.play-icon-btn');
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        loadExerciseGif(ex);
+      });
+      row.addEventListener('click', () => loadExerciseGif(ex));
+      exerciseContainer.appendChild(row);
+    });
+  }
+
+  function resetSession() {
+    completedExercises.clear();
+    sessionCompletionFlag = false;
+    renderExerciseList();
+    if (gifImage) {
+      gifImage.src = '';
+      gifImage.classList.add('hidden');
+    }
+    placeholderDiv.classList.remove('hidden');
+    placeholderDiv.querySelector('span').innerText = 'select an exercise';
+  }
+
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    const icon = themeToggle.querySelector('i');
+    if (isDark) {
+      icon.className = 'fas fa-sun';
+    } else {
+      icon.className = 'fas fa-moon';
+    }
+  });
+
+  function updateTimeAndWeather() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const dateStr = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    document.getElementById('timeDisplay').innerText = timeStr;
+    document.getElementById('dateDisplay').innerText = dateStr;
+  }
+  
+  function getUserLocationAndWeather() {
+    if (navigator.geolocation) {
+      locationStatusSpan.innerHTML = "📍 detecting...";
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          locationStatusSpan.innerHTML = "📍 location found";
+          await fetchWeatherForLocation(lat, lon);
+        },
+        (error) => {
+          console.error("Geolocation error:", error);
+          locationStatusSpan.innerHTML = "📍 using general weather";
+          fetchWeatherForLocation(51.5074, -0.1278);
+        }
+      );
+    } else {
+      locationStatusSpan.innerHTML = "📍 geolocation not supported";
+      fetchWeatherForLocation(51.5074, -0.1278);
+    }
+  }
+  
+  async function fetchWeatherForLocation(lat, lon) {
+    try {
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+      const data = await response.json();
+      const temp = Math.round(data.current_weather.temperature);
+      const weatherCode = data.current_weather.weathercode;
+      let weatherIcon = 'fa-cloud-sun';
+      if (weatherCode === 0) weatherIcon = 'fa-sun';
+      else if (weatherCode <= 3) weatherIcon = 'fa-cloud-sun';
+      else if (weatherCode >= 51 && weatherCode <= 67) weatherIcon = 'fa-cloud-rain';
+      else if (weatherCode >= 71 && weatherCode <= 77) weatherIcon = 'fa-snowflake';
+      else weatherIcon = 'fa-cloud';
+      document.getElementById('weatherDisplay').innerHTML = `<i class="fas ${weatherIcon}"></i><span>${temp}°C</span>`;
+    } catch (error) {
+      console.error("Weather fetch error:", error);
+      document.getElementById('weatherDisplay').innerHTML = `<i class="fas fa-cloud"></i><span>--°C</span>`;
+    }
+  }
+  
+  setInterval(updateTimeAndWeather, 1000);
+  updateTimeAndWeather();
+  getUserLocationAndWeather();
+
+  const dayBtns = document.querySelectorAll('.day-btn');
+  dayBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.day === currentDay) return;
+      dayBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentDay = btn.dataset.day;
+      resetSession();
+    });
+  });
+
+  placeholderDiv.addEventListener('click', () => {
+    if (gifImage) {
+      gifImage.src = '';
+      gifImage.classList.add('hidden');
+    }
+    placeholderDiv.classList.remove('hidden');
+  });
+
+  renderExerciseList();
+  updateProgressUI();
+  
+  // Pre-cache GIF URLs for faster loading
+  async function preloadGifUrls() {
+    const allExercises = [...sessionA, ...sessionB, ...sessionC];
+    for (const ex of allExercises) {
+      if (!urlCache[ex.name]) {
+        await findGifUrl(ex.name);
+      }
+    }
+  }
+  preloadGifUrls();
+</script>
+</body>
+</html>
