@@ -30,7 +30,8 @@
       --accent-dark: #f5e6a3;
       --accent-light: #b8960c;
       --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
-      --gif-bg: #1c1c1e;
+      --gif-bg: #ffffff;
+      --gif-container-bg: #ffffff;
     }
 
     /* LIGHT MODE (when toggled) */
@@ -49,6 +50,7 @@
       --accent-light: #f5e6a3;
       --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
       --gif-bg: #ffffff;
+      --gif-container-bg: #ffffff;
     }
 
     body {
@@ -191,7 +193,7 @@
     .gif-container {
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: var(--gif-bg);
+      background: var(--gif-container-bg);
       border-radius: clamp(16px, 4vw, 24px);
       overflow: hidden;
       display: flex;
