@@ -35,7 +35,7 @@
 
     body.dark {
       --bg-primary: #1c1c1e;
-      --bg-secondary: #2c2c2e;
+      --bg-secondary: #1c1c1e;
       --bg-card: rgba(44, 44, 46, 0.96);
       --text-primary: #f5f5f7;
       --text-secondary: #98989e;
@@ -47,7 +47,7 @@
       --accent-dark: #f5e6a3;
       --accent-light: #b8960c;
       --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
-      --gif-bg: #2c2c2e;
+      --gif-bg: #1c1c1e;
     }
 
     body {
@@ -104,7 +104,6 @@
       flex-wrap: nowrap;
     }
 
-    /* Dark Mode Toggle - No Background */
     .theme-toggle {
       background: transparent;
       border: none;
@@ -123,7 +122,6 @@
       font-size: clamp(1.1rem, 4vw, 1.3rem);
     }
 
-    /* Weather & Time Widget - No Background */
     .info-widget {
       background: transparent;
       backdrop-filter: none;
@@ -229,7 +227,7 @@
     #exerciseGif {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
       background: var(--gif-bg);
     }
 
@@ -640,7 +638,7 @@
         <span>tap any exercise → view GIF</span>
       </div>
       <div class="gif-container" id="gifContainer">
-        <img id="exerciseGif" class="hidden" alt="exercise demonstration" style="width:100%;height:100%;object-fit:contain;">
+        <img id="exerciseGif" class="hidden" alt="exercise demonstration">
         <div id="gifPlaceholder" class="gif-placeholder">
           <i class="fas fa-film"></i>
           <span>select an exercise</span>
