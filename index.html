@@ -185,20 +185,6 @@
     }
 
     .video-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: clamp(0.4rem, 2vw, 0.7rem);
-      padding: 0 0.2rem;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .video-label span:first-child {
-      display: none;
-    }
-
-    .video-label span:last-child {
       display: none;
     }
 
@@ -212,14 +198,14 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      box-shadow: inset 0 0 0 0.5px rgba(0,0,0,0.05);
     }
 
     #exerciseGif {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       background: var(--gif-bg);
+      display: block;
     }
 
     .gif-placeholder {
@@ -233,6 +219,7 @@
       gap: 8px;
       color: var(--text-secondary);
       cursor: pointer;
+      z-index: 10;
     }
 
     .gif-placeholder i {
@@ -626,10 +613,6 @@
 
   <div class="master-card">
     <div class="video-frame">
-      <div class="video-label">
-        <span></span>
-        <span></span>
-      </div>
       <div class="gif-container" id="gifContainer">
         <img id="exerciseGif" class="hidden" alt="exercise demonstration">
         <div id="gifPlaceholder" class="gif-placeholder">
@@ -869,7 +852,6 @@
   }
 
   function firstClickExercise(exercise) {
-    // First click - load GIF and mark as pending confirmation
     loadExerciseGif(exercise);
     
     if (!pendingExercises.has(exercise.name) && !completedExercises.has(exercise.name)) {
@@ -888,14 +870,16 @@
   }
 
   function secondClickExercise(exercise) {
-    // Second click - confirm completion
     if (pendingExercises.has(exercise.name)) {
       confirmExerciseCompletion(exercise.name);
     }
   }
 
   async function loadExerciseGif(exercise) {
-    placeholderDiv.querySelector('span').innerText = 'loading...';
+    if (placeholderDiv) {
+      const span = placeholderDiv.querySelector('span');
+      if (span) span.innerText = 'loading...';
+    }
     
     let gifUrl = urlCache[exercise.name];
     
@@ -909,32 +893,31 @@
         console.error(`Failed to load GIF: ${gifUrl}`);
         showToast(`⚠️ GIF not found: ${exercise.name}`);
         gifImage.classList.add('hidden');
-        placeholderDiv.classList.remove('hidden');
-        placeholderDiv.querySelector('span').innerText = 'select an exercise';
+        if (placeholderDiv) placeholderDiv.classList.remove('hidden');
+        const span = placeholderDiv?.querySelector('span');
+        if (span) span.innerText = 'select an exercise';
       };
       gifImage.onload = function() {
         gifImage.classList.remove('hidden');
-        placeholderDiv.classList.add('hidden');
+        if (placeholderDiv) placeholderDiv.classList.add('hidden');
       };
       gifImage.src = gifUrl;
     } else {
       showToast(`⚠️ No GIF available for ${exercise.name}`);
       gifImage.classList.add('hidden');
-      placeholderDiv.classList.remove('hidden');
-      placeholderDiv.querySelector('span').innerText = 'select an exercise';
+      if (placeholderDiv) placeholderDiv.classList.remove('hidden');
+      const span = placeholderDiv?.querySelector('span');
+      if (span) span.innerText = 'select an exercise';
     }
   }
 
   function handleExerciseClick(exercise) {
     if (completedExercises.has(exercise.name)) {
-      // Already completed - just show GIF
       loadExerciseGif(exercise);
       showToast(`✓ ${exercise.name} already completed`);
     } else if (pendingExercises.has(exercise.name)) {
-      // Second click - confirm completion
       secondClickExercise(exercise);
     } else {
-      // First click - load GIF and mark pending
       firstClickExercise(exercise);
     }
   }
@@ -983,11 +966,13 @@
       gifImage.src = '';
       gifImage.classList.add('hidden');
     }
-    placeholderDiv.classList.remove('hidden');
-    placeholderDiv.querySelector('span').innerText = 'select an exercise';
+    if (placeholderDiv) {
+      placeholderDiv.classList.remove('hidden');
+      const span = placeholderDiv.querySelector('span');
+      if (span) span.innerText = 'select an exercise';
+    }
   }
 
-  // Dark/Light Mode Toggle
   const themeToggle = document.getElementById('themeToggle');
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light');
@@ -1060,13 +1045,15 @@
     });
   });
 
-  placeholderDiv.addEventListener('click', () => {
-    if (gifImage) {
-      gifImage.src = '';
-      gifImage.classList.add('hidden');
-    }
-    placeholderDiv.classList.remove('hidden');
-  });
+  if (placeholderDiv) {
+    placeholderDiv.addEventListener('click', () => {
+      if (gifImage) {
+        gifImage.src = '';
+        gifImage.classList.add('hidden');
+      }
+      placeholderDiv.classList.remove('hidden');
+    });
+  }
 
   renderExerciseList();
   updateProgressUI();
