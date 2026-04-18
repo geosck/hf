@@ -15,25 +15,8 @@
       box-sizing: border-box;
     }
 
-    /* Light Mode (default) - Gold/Amber Theme */
+    /* DARK MODE IS NOW THE DEFAULT (PRIMARY) */
     :root {
-      --bg-primary: #f5f5f7;
-      --bg-secondary: #ffffff;
-      --bg-card: rgba(255, 255, 255, 0.96);
-      --text-primary: #1d1d1f;
-      --text-secondary: #6e6e73;
-      --border-color: rgba(224, 224, 230, 0.6);
-      --row-bg: rgba(245, 245, 247, 0.5);
-      --row-hover: #ffffff;
-      --progress-bg: #ffffff;
-      --accent: #d4af37;
-      --accent-dark: #b8960c;
-      --accent-light: #f5e6a3;
-      --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
-      --gif-bg: #ffffff;
-    }
-
-    body.dark {
       --bg-primary: #1c1c1e;
       --bg-secondary: #1c1c1e;
       --bg-card: rgba(44, 44, 46, 0.96);
@@ -48,6 +31,24 @@
       --accent-light: #b8960c;
       --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
       --gif-bg: #1c1c1e;
+    }
+
+    /* LIGHT MODE (when toggled) */
+    body.light {
+      --bg-primary: #f5f5f7;
+      --bg-secondary: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --border-color: rgba(224, 224, 230, 0.6);
+      --row-bg: rgba(245, 245, 247, 0.5);
+      --row-hover: #ffffff;
+      --progress-bg: #ffffff;
+      --accent: #d4af37;
+      --accent-dark: #b8960c;
+      --accent-light: #f5e6a3;
+      --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f5e6a3 50%, #b8960c 100%);
+      --gif-bg: #ffffff;
     }
 
     body {
@@ -607,7 +608,7 @@
     }
   </style>
 </head>
-<body>
+<body class="dark">
 <div class="app-container">
   <div class="header-section">
     <div class="title-group">
@@ -616,7 +617,7 @@
     </div>
     <div class="header-right">
       <div class="theme-toggle" id="themeToggle">
-        <i class="fas fa-moon"></i>
+        <i class="fas fa-sun"></i>
       </div>
       <div class="info-widget" id="infoWidget">
         <div class="time-date">
@@ -952,15 +953,16 @@
     placeholderDiv.querySelector('span').innerText = 'select an exercise';
   }
 
+  // Dark/Light Mode Toggle - Default is DARK (primary)
   const themeToggle = document.getElementById('themeToggle');
   themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-    const isDark = document.body.classList.contains('dark');
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
     const icon = themeToggle.querySelector('i');
-    if (isDark) {
-      icon.className = 'fas fa-sun';
-    } else {
+    if (isLight) {
       icon.className = 'fas fa-moon';
+    } else {
+      icon.className = 'fas fa-sun';
     }
   });
 
