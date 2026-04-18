@@ -93,9 +93,7 @@
     }
 
     .title-group p {
-      font-size: clamp(0.65rem, 3vw, 0.8rem);
-      font-weight: 400;
-      color: var(--text-secondary);
+      display: none;
     }
 
     .header-right {
@@ -197,19 +195,11 @@
     }
 
     .video-label span:first-child {
-      font-weight: 600;
-      font-size: clamp(0.55rem, 2.5vw, 0.7rem);
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      color: var(--accent);
-      background: rgba(212, 175, 55, 0.12);
-      padding: 3px 10px;
-      border-radius: 30px;
+      display: none;
     }
 
     .video-label span:last-child {
-      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
-      color: var(--text-secondary);
+      display: none;
     }
 
     .gif-container {
@@ -278,8 +268,7 @@
     }
 
     .list-header p {
-      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
-      color: var(--text-secondary);
+      display: none;
     }
 
     .exercise-scroll-list {
@@ -310,6 +299,11 @@
     .exercise-row.completed {
       background: rgba(212, 175, 55, 0.12);
       border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .exercise-row.pending-confirmation {
+      background: rgba(212, 175, 55, 0.25);
+      border-color: var(--accent);
     }
 
     .exercise-info {
@@ -592,7 +586,6 @@
       .header-right { justify-content: flex-end; width: 100%; }
       .day-selector { width: 100%; justify-content: center; }
       .day-btn { flex: 1; text-align: center; }
-      .video-label { flex-direction: column; align-items: flex-start; }
     }
 
     @media (max-width: 480px) {
@@ -613,7 +606,6 @@
   <div class="header-section">
     <div class="title-group">
       <h1>HomeFit</h1>
-      <p>5 exercises per session · whole body training</p>
     </div>
     <div class="header-right">
       <div class="theme-toggle" id="themeToggle">
@@ -635,8 +627,8 @@
   <div class="master-card">
     <div class="video-frame">
       <div class="video-label">
-        <span><i class="fas fa-play-circle"></i> exercise demo</span>
-        <span>tap any exercise → view GIF</span>
+        <span></span>
+        <span></span>
       </div>
       <div class="gif-container" id="gifContainer">
         <img id="exerciseGif" class="hidden" alt="exercise demonstration">
@@ -650,7 +642,6 @@
     <div class="exercise-list-section">
       <div class="list-header">
         <h3><i class="fas fa-dumbbell"></i> whole body exercises</h3>
-        <p>tap <i class="fas fa-play"></i> to complete</p>
       </div>
       <div class="exercise-scroll-list" id="exerciseListContainer"></div>
     </div>
@@ -736,10 +727,6 @@
     console.warn(`No GIF found for: ${exerciseName}`);
     return null;
   }
-  
-  function getGifForExercise(name) {
-    return urlCache[name] || null;
-  }
 
   // ============================================================
   // WHOLE BODY EXERCISES - 5 per session
@@ -772,6 +759,7 @@
 
   let currentDay = "A";
   let completedExercises = new Set();
+  let pendingExercises = new Set();
   let weeklyData = [12, 10, 15, 11, 9, 14, 13];
   let sessionCompletionFlag = false;
 
@@ -851,9 +839,11 @@
     updateProgressUI();
   }
 
-  function markExerciseCompleted(exerciseName) {
-    if (completedExercises.has(exerciseName)) return false;
+  function confirmExerciseCompletion(exerciseName) {
+    if (completedExercises.has(exerciseName)) return;
+    
     completedExercises.add(exerciseName);
+    pendingExercises.delete(exerciseName);
     recordProgress();
     
     const sessionExercises = sessions[currentDay];
@@ -864,6 +854,7 @@
     rows.forEach(row => {
       const nameEl = row.querySelector('.exercise-name');
       if (nameEl && nameEl.innerText === exerciseName) {
+        row.classList.remove('pending-confirmation');
         row.classList.add('completed');
         const btnIcon = row.querySelector('.play-icon-btn i');
         if (btnIcon) btnIcon.className = 'fas fa-check';
@@ -874,7 +865,33 @@
       sessionCompletionFlag = true;
       triggerSessionComplete();
     }
-    return true;
+    showToast(`✓ ${exerciseName} completed! Great job! 💪`);
+  }
+
+  function firstClickExercise(exercise) {
+    // First click - load GIF and mark as pending confirmation
+    loadExerciseGif(exercise);
+    
+    if (!pendingExercises.has(exercise.name) && !completedExercises.has(exercise.name)) {
+      pendingExercises.add(exercise.name);
+      
+      const rows = document.querySelectorAll('.exercise-row');
+      rows.forEach(row => {
+        const nameEl = row.querySelector('.exercise-name');
+        if (nameEl && nameEl.innerText === exercise.name) {
+          row.classList.add('pending-confirmation');
+        }
+      });
+      
+      showToast(`👉 Tap "${exercise.name}" again to confirm completion`);
+    }
+  }
+
+  function secondClickExercise(exercise) {
+    // Second click - confirm completion
+    if (pendingExercises.has(exercise.name)) {
+      confirmExerciseCompletion(exercise.name);
+    }
   }
 
   async function loadExerciseGif(exercise) {
@@ -906,9 +923,20 @@
       placeholderDiv.classList.remove('hidden');
       placeholderDiv.querySelector('span').innerText = 'select an exercise';
     }
-    
-    const isNew = markExerciseCompleted(exercise.name);
-    if (isNew) showToast(`✓ ${exercise.name} completed`);
+  }
+
+  function handleExerciseClick(exercise) {
+    if (completedExercises.has(exercise.name)) {
+      // Already completed - just show GIF
+      loadExerciseGif(exercise);
+      showToast(`✓ ${exercise.name} already completed`);
+    } else if (pendingExercises.has(exercise.name)) {
+      // Second click - confirm completion
+      secondClickExercise(exercise);
+    } else {
+      // First click - load GIF and mark pending
+      firstClickExercise(exercise);
+    }
   }
 
   function renderExerciseList() {
@@ -917,8 +945,13 @@
     
     sessionExercises.forEach(ex => {
       const isCompleted = completedExercises.has(ex.name);
+      const isPending = pendingExercises.has(ex.name);
+      let rowClass = 'exercise-row';
+      if (isCompleted) rowClass += ' completed';
+      if (isPending) rowClass += ' pending-confirmation';
+      
       const row = document.createElement('div');
-      row.className = `exercise-row ${isCompleted ? 'completed' : ''}`;
+      row.className = rowClass;
       row.innerHTML = `
         <div class="exercise-info">
           <div class="exercise-name">${ex.name}</div>
@@ -928,21 +961,22 @@
           </div>
         </div>
         <button class="play-icon-btn">
-          <i class="fas ${isCompleted ? 'fa-check' : 'fa-play'}"></i>
+          <i class="fas ${isCompleted ? 'fa-check' : (isPending ? 'fa-clock' : 'fa-play')}"></i>
         </button>
       `;
       const playBtn = row.querySelector('.play-icon-btn');
       playBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        loadExerciseGif(ex);
+        handleExerciseClick(ex);
       });
-      row.addEventListener('click', () => loadExerciseGif(ex));
+      row.addEventListener('click', () => handleExerciseClick(ex));
       exerciseContainer.appendChild(row);
     });
   }
 
   function resetSession() {
     completedExercises.clear();
+    pendingExercises.clear();
     sessionCompletionFlag = false;
     renderExerciseList();
     if (gifImage) {
@@ -953,7 +987,7 @@
     placeholderDiv.querySelector('span').innerText = 'select an exercise';
   }
 
-  // Dark/Light Mode Toggle - Default is DARK (primary)
+  // Dark/Light Mode Toggle
   const themeToggle = document.getElementById('themeToggle');
   themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light');
