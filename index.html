@@ -26,8 +26,6 @@
       --row-bg: rgba(245, 245, 247, 0.5);
       --row-hover: #ffffff;
       --progress-bg: #ffffff;
-      --badge-bg: rgba(255, 255, 255, 0.7);
-      --glass-bg: rgba(255, 255, 255, 0.6);
       --accent: #d4af37;
       --accent-dark: #b8960c;
       --accent-light: #f5e6a3;
@@ -44,8 +42,6 @@
       --row-bg: rgba(58, 58, 60, 0.5);
       --row-hover: #3a3a3c;
       --progress-bg: #2c2c2e;
-      --badge-bg: rgba(44, 44, 46, 0.7);
-      --glass-bg: rgba(44, 44, 46, 0.6);
       --accent: #d4af37;
       --accent-dark: #f5e6a3;
       --accent-light: #b8960c;
@@ -103,80 +99,74 @@
       display: flex;
       align-items: center;
       gap: clamp(0.5rem, 2vw, 1rem);
-      flex-wrap: wrap;
-      justify-content: flex-end;
+      flex-wrap: nowrap;
     }
 
+    /* Dark Mode Toggle - No Background */
     .theme-toggle {
-      background: var(--glass-bg);
-      backdrop-filter: blur(8px);
-      border: 0.5px solid var(--border-color);
-      border-radius: 30px;
-      padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
+      background: transparent;
+      border: none;
+      padding: 0;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
-      color: var(--text-primary);
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
+      color: var(--accent);
       transition: none;
+      width: auto;
     }
 
     .theme-toggle i {
-      font-size: clamp(1rem, 3.5vw, 1.2rem);
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
     }
 
+    /* Weather & Time Widget - No Background */
     .info-widget {
-      background: var(--badge-bg);
-      backdrop-filter: blur(12px);
-      border-radius: 30px;
-      padding: clamp(0.4rem, 2vw, 0.6rem) clamp(0.8rem, 3vw, 1.2rem);
-      border: 0.5px solid var(--border-color);
+      background: transparent;
+      backdrop-filter: none;
+      border: none;
+      padding: 0;
       display: flex;
       align-items: center;
-      gap: clamp(0.5rem, 2vw, 1rem);
-      flex-wrap: wrap;
+      gap: clamp(0.8rem, 2vw, 1.2rem);
+      flex-wrap: nowrap;
     }
 
     .time-date {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 0.5rem;
     }
 
     .time-display {
-      font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+      font-size: clamp(0.85rem, 3.5vw, 1rem);
       font-weight: 600;
       letter-spacing: -0.3px;
       color: var(--text-primary);
     }
 
     .date-display {
-      font-size: clamp(0.5rem, 2.5vw, 0.65rem);
+      font-size: clamp(0.7rem, 3vw, 0.85rem);
       color: var(--text-secondary);
-      margin-top: 2px;
     }
 
     .weather-display {
-      font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+      font-size: clamp(0.7rem, 3vw, 0.85rem);
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       gap: 6px;
-      padding-left: clamp(0.4rem, 2vw, 0.8rem);
-      border-left: 0.5px solid var(--border-color);
     }
 
     .weather-display i {
-      font-size: clamp(0.7rem, 3vw, 0.9rem);
+      font-size: clamp(0.75rem, 3vw, 0.9rem);
       color: var(--accent);
     }
 
     .location-status {
-      font-size: 0.6rem;
-      color: var(--text-secondary);
-      margin-top: 2px;
-      text-align: right;
+      display: none;
     }
 
     .master-card {
@@ -598,19 +588,15 @@
 
     @media (max-width: 680px) {
       .header-section { flex-direction: column; align-items: stretch; }
-      .header-right { justify-content: space-between; width: 100%; }
-      .info-widget { flex: 1; justify-content: space-between; }
+      .header-right { justify-content: flex-end; width: 100%; }
       .day-selector { width: 100%; justify-content: center; }
       .day-btn { flex: 1; text-align: center; }
       .video-label { flex-direction: column; align-items: flex-start; }
     }
 
     @media (max-width: 480px) {
-      .header-right { flex-direction: column; align-items: stretch; }
-      .theme-toggle { justify-content: center; }
-      .info-widget { justify-content: center; flex-wrap: wrap; }
-      .weather-display { border-left: none; padding-left: 0; border-top: 0.5px solid var(--border-color); padding-top: 6px; margin-top: 4px; justify-content: center; }
-      .time-date { align-items: center; }
+      .info-widget { gap: 0.5rem; }
+      .time-date { gap: 0.3rem; }
       .celebration-card { padding: 1.5rem; margin: 1rem; }
       .celebration-title { font-size: 1.4rem; }
     }
@@ -634,9 +620,8 @@
       </div>
       <div class="info-widget" id="infoWidget">
         <div class="time-date">
-          <div class="time-display" id="timeDisplay">--:--</div>
-          <div class="date-display" id="dateDisplay">---</div>
-          <div class="location-status" id="locationStatus">📍 detecting...</div>
+          <span class="time-display" id="timeDisplay">--:--</span>
+          <span class="date-display" id="dateDisplay">---</span>
         </div>
         <div class="weather-display" id="weatherDisplay">
           <i class="fas fa-cloud-sun"></i>
@@ -702,18 +687,8 @@
   // GITHUB PAGES FIX - Case insensitive file lookup
   // ============================================================
   
-  // Define all possible filename variations for GitHub Pages
-  // GitHub is case-sensitive, so we need to try multiple patterns
   const possibleExtensions = ['.gif', '.GIF'];
-  const possibleCaseVariations = [
-    // Original lowercase names
-    'goblet-squat', 'pushups', 'pulldown', 'dumbbell-row', 'plank',
-    'reverse-lunge', 'shoulder-press', 'romanian-deadlift', 'glute-bridge',
-    'dead-bug', 'band-chest-press', 'dumbbell-curl', 'triceps-kickback',
-    'lateral-raise', 'russian-twist'
-  ];
   
-  // Mapping from exercise name to possible filename
   const filenameMap = {
     "Goblet Squat": ["goblet-squat", "goblet_squat", "GobletSquat", "gobletsquat"],
     "Push-ups": ["pushups", "push-ups", "push_ups", "PushUps"],
@@ -732,18 +707,15 @@
     "Russian Twist": ["russian-twist", "russian_twist", "RussianTwist", "russiantwist"]
   };
   
-  // Cache for successful URLs
   const urlCache = {};
   
   async function findGifUrl(exerciseName) {
-    // Check cache first
     if (urlCache[exerciseName]) {
       return urlCache[exerciseName];
     }
     
     const possibleNames = filenameMap[exerciseName] || [exerciseName.toLowerCase().replace(/[^a-z]/g, '')];
     
-    // Try different combinations
     for (const baseName of possibleNames) {
       for (const ext of possibleExtensions) {
         const url = `${baseName}${ext}`;
@@ -765,7 +737,6 @@
   }
   
   function getGifForExercise(name) {
-    // Return the cached URL or null (will be loaded async)
     return urlCache[name] || null;
   }
 
@@ -808,7 +779,6 @@
   const exerciseContainer = document.getElementById('exerciseListContainer');
   const celebrationModal = document.getElementById('celebrationModal');
   const closeCelebrationBtn = document.getElementById('closeCelebration');
-  const locationStatusSpan = document.getElementById('locationStatus');
 
   function showToast(msg) {
     const t = document.createElement('div');
@@ -907,10 +877,8 @@
   }
 
   async function loadExerciseGif(exercise) {
-    // Show loading state
     placeholderDiv.querySelector('span').innerText = 'loading...';
     
-    // Find the GIF URL (this handles case-insensitive search)
     let gifUrl = urlCache[exercise.name];
     
     if (!gifUrl) {
@@ -1006,22 +974,18 @@
   
   function getUserLocationAndWeather() {
     if (navigator.geolocation) {
-      locationStatusSpan.innerHTML = "📍 detecting...";
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          locationStatusSpan.innerHTML = "📍 location found";
           await fetchWeatherForLocation(lat, lon);
         },
         (error) => {
           console.error("Geolocation error:", error);
-          locationStatusSpan.innerHTML = "📍 using general weather";
           fetchWeatherForLocation(51.5074, -0.1278);
         }
       );
     } else {
-      locationStatusSpan.innerHTML = "📍 geolocation not supported";
       fetchWeatherForLocation(51.5074, -0.1278);
     }
   }
@@ -1071,7 +1035,6 @@
   renderExerciseList();
   updateProgressUI();
   
-  // Pre-cache GIF URLs for faster loading
   async function preloadGifUrls() {
     const allExercises = [...sessionA, ...sessionB, ...sessionC];
     for (const ex of allExercises) {
